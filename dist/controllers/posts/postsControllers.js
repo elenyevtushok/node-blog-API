@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePost = exports.deletePost = exports.getPost = exports.createPost = exports.searchPosts = void 0;
+exports.createPostsBatch = exports.updatePost = exports.deletePost = exports.getPost = exports.createPost = exports.searchPosts = void 0;
 const postModel_1 = require("../../models/postModel");
 const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params['id'];
@@ -39,6 +39,23 @@ const createPost = (req, res) => {
     });
 };
 exports.createPost = createPost;
+const createPostsBatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const posts = req.body;
+    // const allPosts = await Post.find();
+    console.log(`Create posts in batch. request: ${JSON.stringify(posts)}`);
+    const response = [];
+    for (const post of posts) {
+        const postDocument = new postModel_1.Post({
+            userId: post.userId,
+            title: post.title,
+            body: post.body,
+        });
+        const savedPost = yield postDocument.save();
+        response.push(savedPost);
+    }
+    res.status(201).json(response);
+});
+exports.createPostsBatch = createPostsBatch;
 const updatePost = (req, res) => {
     const id = req.params['id'];
     const body = req.body;
