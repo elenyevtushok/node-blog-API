@@ -31,6 +31,25 @@ const createPost = (req: Request, res: Response): void => {
 		});
 }
 
+
+
+const createPostsBatch = async (req: Request, res: Response):Promise<void> => {
+	const posts = req.body as PostCreateDto[]
+	// const allPosts = await Post.find();
+	console.log(`Create posts in batch. request: ${JSON.stringify(posts)}`);
+	const response: IPost[] = [];
+	for (const post of posts) {
+		const postDocument: IPost = new Post({
+			userId: post.userId,
+			title: post.title,
+			body: post.body,
+		})
+		 const savedPost = await postDocument.save();
+		 response.push(savedPost);
+	}
+	res.status(201).json(response)
+}
+
 const updatePost = (req: Request, res: Response): void => {
 	const id = req.params['id']
 	const body = req.body as PostUpdateDto
@@ -44,7 +63,7 @@ const updatePost = (req: Request, res: Response): void => {
 		});
 }
 
-const deletePost = (req: Request, res: Response): void =>{
+const deletePost = (req: Request, res: Response): void => {
 	const id = req.params['id'];
 	Post.findByIdAndRemove(id)
 		.then((result) => {
@@ -52,4 +71,4 @@ const deletePost = (req: Request, res: Response): void =>{
 		});
 }
 
-export { searchPosts, createPost, getPost, deletePost, updatePost }
+export { searchPosts, createPost, getPost, deletePost, updatePost, createPostsBatch }
