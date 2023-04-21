@@ -1,10 +1,11 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
+import { IPost } from '../types/postInterface';
 const Schema = mongoose.Schema;
 
 export const postSchema = new Schema({
 	userId: {
-		type: Number,
+		type: Types.ObjectId,
 		required: true,
 	},
 	title: {
@@ -19,20 +20,8 @@ export const postSchema = new Schema({
 
 postSchema.plugin(mongoosePaginate);
 
-// export const Blog = mongoose.model('Blog', blogSchema);
-
-
-interface PostInterface {
-	userId: number,
-	title: string,
-	body: string,
-}
-
-// declare a mongoose document based on a Typescript interface representing your schema
-interface PostDocument extends mongoose.Document, PostInterface { }
-
 // create the paginated model
 export const Post = mongoose.model<
-	PostDocument,
-	mongoose.PaginateModel<PostDocument>
+	IPost,
+	mongoose.PaginateModel<IPost>
 >('Post', postSchema, 'posts');
