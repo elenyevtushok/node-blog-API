@@ -31,11 +31,9 @@ const createPost = (req: Request, res: Response): void => {
 		});
 }
 
-
-
 const createPostsBatch = async (req: Request, res: Response):Promise<void> => {
 	const posts = req.body as PostCreateDto[]
-	// const allPosts = await Post.find();
+
 	console.log(`Create posts in batch. request: ${JSON.stringify(posts)}`);
 	const response: IPost[] = [];
 	for (const post of posts) {

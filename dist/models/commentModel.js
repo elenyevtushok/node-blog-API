@@ -35,11 +35,11 @@ exports.commentSchema = new Schema({
         type: mongoose_1.Types.ObjectId,
         required: true,
     },
-    username: {
+    email: {
         type: String,
         required: true,
     },
-    title: {
+    name: {
         type: String,
         required: true,
     },

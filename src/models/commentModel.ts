@@ -8,11 +8,11 @@ export const commentSchema = new Schema({
 		type: Types.ObjectId,
 		required: true,
 	},
-	username: {
+	email: {
 		type: String,
 		required: true,
 	},
-	title: {
+	name: {
 		type: String,
 		required: true,
 	},
