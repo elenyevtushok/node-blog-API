@@ -41,7 +41,6 @@ const createPost = (req, res) => {
 exports.createPost = createPost;
 const createPostsBatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const posts = req.body;
-    // const allPosts = await Post.find();
     console.log(`Create posts in batch. request: ${JSON.stringify(posts)}`);
     const response = [];
     for (const post of posts) {

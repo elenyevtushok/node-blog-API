@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateComment = exports.deleteComment = exports.getComment = exports.createComment = exports.searchComments = void 0;
+exports.createCommentsForRandomPosts = exports.updateComment = exports.deleteComment = exports.getComment = exports.createComment = exports.searchComments = void 0;
 const commentModel_1 = require("../../models/commentModel");
+const postModel_1 = require("../../models/postModel");
 const getComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params['id'];
     commentModel_1.Comment.findById(id)
@@ -30,8 +31,8 @@ const createComment = (req, res) => {
     const body = req.body;
     const comment = new commentModel_1.Comment({
         postId: body.postId,
-        username: body.username,
-        title: body.title,
+        email: body.email,
+        name: body.name,
         body: body.body,
     });
     comment.save()
@@ -40,11 +41,33 @@ const createComment = (req, res) => {
     });
 };
 exports.createComment = createComment;
+const createCommentsForRandomPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(`Create comments`);
+    const commentCreateDtos = req.body;
+    const allPosts = yield postModel_1.Post.find();
+    const response = [];
+    for (const commentCreateDto of commentCreateDtos) {
+        const post = getRandomPost(allPosts);
+        const comment = new commentModel_1.Comment({
+            postId: post._id,
+            email: commentCreateDto.email,
+            name: commentCreateDto.name,
+            body: commentCreateDto.body,
+        });
+        const savedComment = yield comment.save();
+        response.push(savedComment);
+    }
+    res.status(201).json(response);
+});
+exports.createCommentsForRandomPosts = createCommentsForRandomPosts;
+const getRandomPost = (posts) => {
+    return posts[Math.floor(Math.random() * posts.length)];
+};
 const updateComment = (req, res) => {
     const id = req.params['id'];
     const body = req.body;
     commentModel_1.Comment.findByIdAndUpdate(id, {
-        title: body.title,
+        name: body.name,
         body: body.body
     }, { new: true })
         .then((result) => {
