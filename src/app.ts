@@ -5,9 +5,11 @@ import { Blog } from "./blog";
 import postsRoutes from './routes/postsRoutes'
 import usersRoutes from './routes/usersRoutes';
 import commentsRoutes from './routes/commentsRoutes';
+var cors = require('cors')
 
 // express app
 const app:Express = express();
+app.use(cors())
 app.use(bodyParser.json());
 app.use(postsRoutes);
 app.use(usersRoutes);
